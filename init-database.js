@@ -87,6 +87,47 @@ db.serialize(() => {
   
   console.log('✅ 表结构创建完成');
   
+  // 创建视图（与原始数据库保持一致）
+  console.log('🔧 创建数据库视图...');
+  
+  // 产品详情视图
+  db.run(`
+    CREATE VIEW v_product_details AS
+    SELECT 
+      p.id,
+      p.name,
+      p.brand,
+      p.price,
+      p.rating,
+      p.review_count,
+      p.description,
+      p.evaluation,
+      c.level1,
+      c.level2,
+      c.level3,
+      COALESCE(p.rating * 0.4 + p.review_count * 0.0001, 0) as confidence_score
+    FROM products p
+    JOIN categories c ON p.category_id = c.id
+    WHERE p.evaluation IS NOT NULL AND p.evaluation != ''
+  `);
+  
+  // 品类统计视图
+  db.run(`
+    CREATE VIEW v_category_stats AS
+    SELECT 
+      c.level1,
+      c.level2,
+      c.level3,
+      COUNT(p.id) as product_count,
+      AVG(p.rating) as avg_rating,
+      SUM(p.review_count) as total_reviews
+    FROM categories c
+    LEFT JOIN products p ON c.id = p.category_id
+    GROUP BY c.level1, c.level2, c.level3
+  `);
+  
+  console.log('✅ 视图创建完成');
+  
   // 插入示例数据
   console.log('📝 插入示例数据...');
   
