@@ -1,19 +1,25 @@
-# BestGoods - 全球最佳商品评选网站
+# BestGoods - 全球最佳商品评选网站 (3000端口版本)
 
 ## 🚀 快速开始
 
 ### 本地运行
 ```bash
-# 1. 进入项目目录
-cd bestgoods-complete-backup-20260221_0307
+# 1. 克隆仓库
+git clone https://github.com/DoublePerpetual/bestgoods-3000.git
+cd bestgoods-3000
 
 # 2. 安装依赖
 npm install
 
-# 3. 启动服务器
+# 3. 初始化数据库（首次运行需要）
+node init-database.js
+
+# 4. 启动服务器
+npm start
+# 或直接运行
 node bestgoods-complete-website.js
 
-# 4. 访问网站
+# 5. 访问网站
 # 首页: http://localhost:3000/
 # 详情页示例: http://localhost:3000/category/个护健康/剃须用品/一次性剃须刀
 ```
